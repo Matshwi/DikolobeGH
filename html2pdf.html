@@ -3765,7 +3765,7 @@ console.log("in between points - after pdf-content " + element);
 
 
 const opt = {
-      margin:       5,                   // mm
+      margin:       3,                   // mm
       filename:     `DMRE FORM.pdf`,
       html2canvas:  { scale: 2, useCORS: true, allowTaint: false, logging: true },
       jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
@@ -3789,7 +3789,7 @@ html2pdf().set(opt).from(element).toPdf().get('pdf').then((pdf) => {
       const height = pdf.internal.pageSize.getHeight();
 
       pdf.setLineWidth(0.5);          // border thickness
-      pdf.rect(4, 8, width - 16, height - 16);  
+      pdf.rect(8, 8, width - 16, height - 16);  
       // (8,8) = border padding
       // width-16 and height-16 = border size
 
