@@ -3789,7 +3789,7 @@ html2pdf().set(opt).from(element).toPdf().get('pdf').then((pdf) => {
       const height = pdf.internal.pageSize.getHeight();
 
       pdf.setLineWidth(0.5);          // border thickness
-      pdf.rect(8, 8, width - 16, height - 16);  
+      pdf.rect(4, 8, width - 16, height - 16);  
       // (8,8) = border padding
       // width-16 and height-16 = border size
 
