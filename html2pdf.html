@@ -1799,7 +1799,7 @@
                                         max-width: 192mm;
                                         margin: 5%  auto;
                                         background: white;
-                                        border: 2px solid black;
+                                        /*border: 2px solid black;*/
                                         font-family: Arial, sans-serif;
                                     }
 
@@ -2092,7 +2092,7 @@ SA COAT<br>OF ARMS
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="page-number">i</div>
+                                        
                                     </div>
                                     
 <div class="page-section" style="margin-left: 14%;">
@@ -2385,7 +2385,7 @@ SA COAT<br>OF ARMS
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="page-number">ii</div>
+                                        
                                     </div>
 
 <div class="page-section" style="margin-left: 14%;">
@@ -2720,7 +2720,7 @@ SA COAT<br>OF ARMS
                                                 </div>
                                             </div>
                                         </div>
-<div class="page-number">iii</div>
+
                                     </div>
 
 <div class="page-section" style="margin-left: 14%;">
@@ -2939,7 +2939,7 @@ SA COAT<br>OF ARMS
 <div style="border-bottom: 1px solid black; margin-bottom: 5px; height: 18px;"></div>
                                             </div>
                                         </div>
-                                        <div class="page-number">iv</div>
+                                        
                                     </div>
                                     
 <!--<div class="page-section">
@@ -2962,7 +2962,7 @@ SA COAT<br>OF ARMS
                                                 </tbody>
                                             </table>
                                         </div>
-<div class="page-number">v</div>
+
                                     </div>-->
                                     
 <div class="page-section" style="max-width: 180mm; margin-left: 10%;margin-top: 30%;">
@@ -2997,7 +2997,7 @@ SA COAT<br>OF ARMS
 </div>
                                             </div>
                                         </div>
-                                        <div class="page-number">vi</div>
+                                        
                                     </div>
                                     
 <!--<div style="border-top: 2px solid black;">
@@ -3122,7 +3122,7 @@ If this application form is completed electronically it must be printed out, sig
                                                 </tbody>
                                             </table>
                                         </div>
-                                        <div class="page-number">vii</div>
+                                        
                                     </div>-->
                                 </div>
                             </div>
@@ -3766,7 +3766,7 @@ console.log("in between points - after pdf-content " + element);
 const opt = {
       margin:       5,                   // mm
       filename:     `DMRE FORM.pdf`,
-      html2canvas:  { scale: 1, useCORS: true, allowTaint: false },
+      html2canvas:  { scale: 2, useCORS: true, allowTaint: false },
       jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
     };
 
@@ -3782,7 +3782,8 @@ html2pdf().set(opt).from(element).toPdf().get('pdf').then((pdf) => {
     for (let i = 1; i <= totalPages; i++) {
       pdf.setPage(i);
 
-      // ==== 1. Draw Border ====
+      // ==== 1. Draw Border ====          max-width: 192mm;
+                                        //margin: 5%  auto;
       const width = pdf.internal.pageSize.getWidth();
       const height = pdf.internal.pageSize.getHeight();
 
