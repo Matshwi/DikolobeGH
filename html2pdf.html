@@ -3140,7 +3140,7 @@ If this application form is completed electronically it must be printed out, sig
     </div>
         <script type="module">
 
-            /*
+            
   // Import the functions you need from the SDKs you need
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-analytics.js";
@@ -3181,7 +3181,7 @@ If this application form is completed electronically it must be printed out, sig
 
 //var dahsboardlink = document.getElementById("dashboard");
 
-/*var regfs = document.getElementById("regfs");
+var regfs = document.getElementById("regfs");
 
 
 
@@ -3680,104 +3680,14 @@ push(refdb, fsData)
     async function loadData() {
 
          const opt = {
-      margin:       5,                   // mm
-      filename:     `DMRE FORM - ${childDatasnapshot.stationname} - ${currentYear}.pdf`,
-      image:        { type: 'jpeg', quality: 0.98 },
-      html2canvas:  { scale: 2, useCORS: true, allowTaint: false },
-      jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-    };
-
-    // Start conversion
-    await html2pdf().set(opt).from(element).save();
-
-    const blobPDF = await html2pdf().set(opt).from(element).outputPdf("blob");
-
-    const filenamedmre = `DMRE FORM - ${childDatasnapshot.stationname} - ${currentYear}.pdf`;
-
-const storageRef = Sref(storage, `AnnualReturns/${paramValue}/${filenamedmre}`);
-
-
-const uploadTask = uploadBytesResumable(storageRef, blobPDF);
-
-
-  uploadTask.on(
-    "state_changed",
-    (snapshot) => {
-      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      console.log("Upload is " + Math.round(progress) + "% done");
-    },
-    (error) => {
-      console.error("Upload failed:", error);
-    },
-    () => {
-      window.location.href = `./declaration.html?datatoken=${paramValue}`;
-    }
-  );
-
-
-
-
-
-
-
-
-
-
-
-/*
-// Create custom filename
-const currentYear = new Date().getFullYear();
-const fileName = `DMRE FORM - ${childDatasnapshot.stationname} - ${currentYear}.pdf`;
-const storageRef = ref(storage, `dmre_forms/${fileName}`);
-
-// Convert html2pdf to Blob
-const element = document.getElementById('pdf-content');
-
-html2pdf()
-  .from(element)
-  .outputPdf('blob')
-  .then((pdfBlob) => {
-      // Upload to storage
-      uploadBytes(storageRef, pdfBlob).then((snapshot) => {
-          console.log("Uploaded:", fileName);
-      });
-  });
-
-
-
-}
-    
-   
-loadData();
-   
-       
-
-    
-    });*/
-
-            console.log("starting point");
-
-const element = document.getElementById('pdf-content');
-console.log("in between points - after pdf-content " + element);
-
-
-/*html2canvas(element).then(() => console.log("html2canvas OK"));*/
-
-
-
-
-const opt = {
       margin:       3,                   // mm
-      filename:     `DMRE FORM.pdf`,
+      filename:     `DMRE FORM - ${childDatasnapshot.stationname} - ${currentYear}.pdf`,
       html2canvas:  { scale: 2, useCORS: true, allowTaint: false, logging: true },
       jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
     };
 
-console.log("in between points - after opt " + opt);
-
-
-
-html2pdf().set(opt).from(element).toPdf().get('pdf').then((pdf) => {
+    // Start conversion
+    html2pdf().set(opt).from(element).toPdf().get('pdf').then((pdf) => {
 
     console.log("in between points - then function");
     const totalPages = pdf.internal.getNumberOfPages();
@@ -3821,8 +3731,155 @@ function toRoman(num) {
   return roman;
 }
 
+    const blobPDF = await html2pdf().set(opt).from(element).outputPdf("blob");
 
-console.log("ending point");
+    const filenamedmre = `DMRE FORM - ${childDatasnapshot.stationname} - ${currentYear}.pdf`;
+
+const storageRef = Sref(storage, `AnnualReturns/${paramValue}/${filenamedmre}`);
+
+
+const uploadTask = uploadBytesResumable(storageRef, blobPDF);
+
+
+  uploadTask.on(
+    "state_changed",
+    (snapshot) => {
+      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      console.log("Upload is " + Math.round(progress) + "% done");
+    },
+    (error) => {
+      console.error("Upload failed:", error);
+    },
+    () => {
+      window.location.href = `./declaration.html?datatoken=${paramValue}`;
+    }
+  );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Convert html2pdf to Blob
+
+/*html2pdf()
+  .from(element)
+  .outputPdf('blob')
+  .then((pdfBlob) => {
+      // Upload to storage
+      uploadBytes(storageRef, pdfBlob).then((snapshot) => {
+          console.log("Uploaded:", fileName);
+      });
+  });*/
+
+
+async function savePdfToFirebase() {
+  const pdfBlob = await generatePdfBlob();
+
+      // Create custom filename
+const currentYear = new Date().getFullYear();
+
+
+
+  // Create a unique filename (optional)
+  const fileName = `DMRE FORM - ${childDatasnapshot.stationname} - ${currentYear}.pdf`;
+
+  // Reference in Firebase Storage
+  const storageRef = ref(storage, `dmre_forms/${fileName}`);
+
+  // Upload PDF Blob
+  await uploadBytes(storageRef, pdfBlob);
+
+  alert("PDF saved to Firebase Storage!");
+}
+
+  async function generatePdfBlob() {
+  return new Promise((resolve) => {
+
+
+
+    const opt = {
+      margin: 10,
+      filename: 'document.pdf',
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+
+    html2pdf()
+      .set(opt)
+      .from(element)
+      .toPdf()
+      .get('pdf')
+      .then((pdf) => {
+        const totalPages = pdf.internal.getNumberOfPages();
+
+        for (let i = 1; i <= totalPages; i++) {
+          pdf.setPage(i);
+
+          // Border
+          const width = pdf.internal.pageSize.getWidth();
+          const height = pdf.internal.pageSize.getHeight();
+
+          pdf.setLineWidth(0.5);
+          pdf.rect(8, 8, width - 16, height - 16);
+
+          // Roman numerals
+          const roman = toRoman(i);
+          pdf.setFontSize(10);
+          pdf.text(roman, width / 2, height - 10, { align: 'center' });
+        }
+
+        // Output PDF as Blob
+        const pdfBlob = pdf.output('blob');
+        resolve(pdfBlob);
+      });
+  });
+}
+
+
+
+}
+    
+   
+loadData();
+
+
+       
+
+    
+    });
+
+
+
+
+
+
+
+function toRoman(num) {
+  const lookup = {
+    M:1000, CM:900, D:500, CD:400,
+    C:100, XC:90, L:50, XL:40,
+    X:10, IX:9, V:5, IV:4, I:1
+  };
+  let roman = '';
+  for (let i in lookup) {
+    while (num >= lookup[i]) {
+      roman += i;
+      num -= lookup[i];
+    }
+  }
+  return roman;
+}
+
+
+
 </script>
 
     </body>
