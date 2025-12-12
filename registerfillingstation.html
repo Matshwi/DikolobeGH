@@ -2308,7 +2308,9 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 
 
 
-async function saveAnnualReturn() {
+var regfs = document.getElementById("regfs");
+
+  regfs.addEventListener("click", function(event) {
     var company_name = document.getElementById("company_name").value;
 var trade_name = document.getElementById("trade_name").value;
 var salute = document.getElementById("salute").value;
@@ -2357,7 +2359,7 @@ var registration_number = document.getElementById("registration_number").value;
   } else {
     console.log("Data saved successfully!");
   }
-}
+})
 
 
         </script>
